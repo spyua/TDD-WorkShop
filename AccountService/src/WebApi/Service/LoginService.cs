@@ -2,37 +2,28 @@
 {
     public class LoginService
     {
-        private int _failedLoginAttempts = 0;
-        private bool _isAccountLocked = false;
+        private IUserRepoitory _userRepoitory;
 
-        public bool IsAccountLocked(string v)
+        public LoginService(IUserRepoitory userRepoitory)
         {
-            return _isAccountLocked; // 返回帳戶是否被鎖定
+            _userRepoitory = userRepoitory;
         }
 
         public bool Login(string username, string password)
         {
-            if (_isAccountLocked)
+            User user = _userRepoitory.GetUser(username);
+
+            if (InvalidPassword(password, user))
             {
-                return false; // 帳戶被鎖定
+                return false;
             }
 
-            if (username == "validUser" && password == "validPassword")
-            {
-                _failedLoginAttempts = 0; // 重置失敗登入計數
-                return true; // 登入成功
-            }
-            else
-            {
-                _failedLoginAttempts++;
+            return true;
+        }
 
-                if (_failedLoginAttempts >= 3)
-                {
-                    _isAccountLocked = true; // 鎖定帳戶
-                }
-
-                return false; // 登入失敗
-            }
+        private static bool InvalidPassword(string password, User user)
+        {
+            return user == null || !user.Password.Equals(password);
         }
     }
 }
