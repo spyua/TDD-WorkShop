@@ -10,7 +10,7 @@
             return _isAccountLocked; // 返回帳戶是否被鎖定
         }
 
-        public bool TryLogin(string username, string password)
+        public bool Login(string username, string password)
         {
             if (_isAccountLocked)
             {

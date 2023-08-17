@@ -30,7 +30,7 @@ namespace WebApi.Test
         [When(@"用戶嘗試登入")]
         public void When用戶嘗試登入()
         {
-            _loginResult = _loginService.TryLogin(_username, _password);
+            _loginResult = _loginService.Login(_username, _password);
         }
 
         [Then(@"登入應成功")]
@@ -55,14 +55,14 @@ namespace WebApi.Test
         [Given(@"用戶已經嘗試登入二次並失敗")]
         public void Given用戶已經嘗試登入二次並失敗()
         {
-            _loginService.TryLogin("user", "wrongPassword");
-            _loginService.TryLogin("user", "wrongPassword");
+            _loginService.Login("user", "wrongPassword");
+            _loginService.Login("user", "wrongPassword");
         }
 
         [When(@"用戶再次嘗試登入並失敗")]
         public void When用戶再次嘗試登入並失敗()
         {
-            _loginResult = _loginService.TryLogin("user", "wrongPassword");
+            _loginResult = _loginService.Login("user", "wrongPassword");
         }
 
         [Then(@"帳戶應被鎖定")]
