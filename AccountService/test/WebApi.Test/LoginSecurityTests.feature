@@ -10,7 +10,7 @@ Scenario: 錯誤的帳號或密碼
     When 用戶嘗試登入
     Then 登入應失敗
 
-Scenario: 兩次登入失敗
-    Given 用戶已經嘗試登入兩次並失敗
+Scenario: 二次登入失敗
+    Given 用戶已經嘗試登入二次並失敗
     When 用戶再次嘗試登入並失敗
     Then 帳戶應被鎖定

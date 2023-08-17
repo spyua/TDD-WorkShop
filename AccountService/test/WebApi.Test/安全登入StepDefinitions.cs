@@ -52,8 +52,8 @@ namespace WebApi.Test
             _loginResult.Should().BeFalse();
         }
 
-        [Given(@"用戶已經嘗試登入兩次並失敗")]
-        public void Given用戶已經嘗試登入兩次並失敗()
+        [Given(@"用戶已經嘗試登入二次並失敗")]
+        public void Given用戶已經嘗試登入二次並失敗()
         {
             _loginService.TryLogin("user", "wrongPassword");
             _loginService.TryLogin("user", "wrongPassword");
