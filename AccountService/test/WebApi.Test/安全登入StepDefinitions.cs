@@ -15,6 +15,9 @@ namespace WebApi.Test
         public 安全登入StepDefinitions()
         {
             _loginService = new LoginService(); // 初始化登入服務
+            _username = string.Empty;
+            _password = string.Empty;
+            _loginResult = false;
         }
 
         [Given(@"一個有效的帳號和密碼")]
