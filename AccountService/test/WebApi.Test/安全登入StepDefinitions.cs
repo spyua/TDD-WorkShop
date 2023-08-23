@@ -1,7 +1,7 @@
 using FluentAssertions;
 using NSubstitute;
-using System;
 using TechTalk.SpecFlow;
+using WebApi.Persistence;
 
 namespace WebApi.Test
 {
@@ -28,12 +28,12 @@ namespace WebApi.Test
         {
             _username = "validUser";
             _password = "validPassword";
+            _userRepoitory.GetUser(_username).Returns(new User { UserName = _username, Password = _password });
         }
 
         [When(@"用戶嘗試登入")]
         public void When用戶嘗試登入()
         {
-            _userRepoitory.GetUser(_username).Returns(new User { UserName = _username, Password = _password });
             _loginResult = _loginService.Login(_username, _password);
         }
 
@@ -48,6 +48,7 @@ namespace WebApi.Test
         {
             _username = "invalidUser";
             _password = "invalidPassword";
+            _userRepoitory.GetUser(_username).Returns(new User { UserName = _username, Password = "Correct Password" });
         }
 
         [Then(@"登入應失敗")]
@@ -59,20 +60,24 @@ namespace WebApi.Test
         [Given(@"用戶已經嘗試登入二次並失敗")]
         public void Given用戶已經嘗試登入二次並失敗()
         {
-            //_loginService.Login("user", "wrongPassword");
-            //_loginService.Login("user", "wrongPassword");
+            _username = "invalidUser";
+            _password = "invalidPassword";
+            _userRepoitory.GetUser(_username).Returns(new User { UserName = _username, Password = "correctPassword" });
+
+            _loginService.Login(_username, _password); // 第一次失敗
+            _loginService.Login(_username, _password); // 第二次失敗
         }
 
         [When(@"用戶再次嘗試登入並失敗")]
         public void When用戶再次嘗試登入並失敗()
         {
-            //_loginResult = _loginService.Login("user", "wrongPassword");
+            _loginResult = _loginService.Login(_username, _password); // 第三次失敗
         }
 
         [Then(@"帳戶應被鎖定")]
         public void Then帳戶應被鎖定()
         {
-            //_loginService.IsAccountLocked("user").Should().BeTrue();
+            _loginService.IsLocked(_username).Should().BeTrue();
         }
     }
 }
